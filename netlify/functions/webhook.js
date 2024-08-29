@@ -1,18 +1,38 @@
-const express = require('express');
-const serverless = require('serverless-http');
-const app = express();
+const sgMail = require('@sendgrid/mail');
 
-app.use(express.json());
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-app.post('/webhook', (req, res) => {
-    const alert = req.body;
-    console.log('Received Grafana alert:', alert);
+exports.handler = async function(event, context) {
+  if (event.httpMethod === 'POST') {
+    const body = JSON.parse(event.body);
+    const message = body.message || 'No message';
 
-    // Handle the alert data here
+    const msg = {
+      to: 'recipient@example.com',  // Replace with recipient's email address
+      from: 'sender@example.com',  // Replace with sender's email address
+      subject: 'Alert Notification',
+      text: `New alert received: ${message}`,
+      html: `<strong>New alert received:</strong> ${message}`,
+    };
 
-    res.status(200).send({ status: 'received' });
-});
-
-// Export as a Netlify function
-module.exports.handler = serverless(app);
+    try {
+      await sgMail.send(msg);
+      return {
+        statusCode: 200,
+        body: JSON.stringify({ status: 'email sent' }),
+      };
+    } catch (error) {
+      console.error(error);
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ status: 'error', message: error.message }),
+      };
+    }
+  } else {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ status: 'method not allowed' }),
+    };
+  }
+};
 
