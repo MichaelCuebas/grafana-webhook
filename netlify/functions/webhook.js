@@ -8,8 +8,8 @@ exports.handler = async function(event, context) {
     const message = body.message || 'No message';
 
     const msg = {
-      to: 'recipient@example.com',  // Replace with recipient's email address
-      from: 'sender@example.com',  // Replace with sender's email address
+      to: 'michael.cuebasw@gmail.com',  // Replace with recipient's email address
+      from: 'michael.cuebas@gmail.com',  // Replace with sender's email address
       subject: 'Alert Notification',
       text: `New alert received: ${message}`,
       html: `<strong>New alert received:</strong> ${message}`,
