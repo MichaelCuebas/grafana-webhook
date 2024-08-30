@@ -8,8 +8,8 @@ exports.handler = async function(event, context) {
     const message = body.message || 'No message';
 
     const msg = {
-      to: 'michael.cuebasw@gmail.com',  // Replace with recipient's email address
-      from: 'michael.cuebas@gmail.com',  // Replace with sender's email address
+      to: 'michael.cuebas@gmail.com',  // Replace with recipient's email address
+      from: 'michael.cuebas@gmail.com',  // Replace with a verified sender email address from SendGrid
       subject: 'Alert Notification',
       text: `New alert received: ${message}`,
       html: `<strong>New alert received:</strong> ${message}`,
@@ -35,4 +35,3 @@ exports.handler = async function(event, context) {
     };
   }
 };
-
